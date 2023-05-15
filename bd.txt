@@ -8,7 +8,7 @@ CREATE TABLE Pedido (
     cliente varchar(255),
     status_pedido varchar(255),
     PRIMARY KEY(id)
-    );
+);
     
 CREATE TABLE ItemPedido (
 	id int AUTO_INCREMENT,
