@@ -1,5 +1,4 @@
 using Gamification03.Model;
-
 namespace Gamification03.Interfaces;
 
 public interface IPedidoRepository
