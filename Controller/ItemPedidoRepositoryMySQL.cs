@@ -18,12 +18,10 @@ public class ItemPedidoRepositoryMySQL : IItemPedidoRepository
         {
             Console.WriteLine(e.Message.ToString());
         }
-        
     }
     
     public void Adicionar(ItemPedido itemPedido)
     {
-        throw new NotImplementedException();
     }
 
     public void Atualizar(ItemPedido itemPedido)
