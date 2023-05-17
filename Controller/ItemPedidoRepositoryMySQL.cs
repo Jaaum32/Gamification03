@@ -22,25 +22,102 @@ public class ItemPedidoRepositoryMySQL : IItemPedidoRepository
     
     public void Adicionar(ItemPedido itemPedido)
     {
+        InicializeDatabase();
+        MySqlCommand cmd = new MySqlCommand();
+
+        cmd.CommandText =
+            "INSERT INTO PEDIDO(produto, quantidade, preco_unit, pedido_id) VALUES(@produto, @quantidade, @preco_unit, @pedido_id); SELECT LAST_INSERT_ID();";
+
+        cmd.Parameters.AddWithValue("@produto", itemPedido.Produto);
+        cmd.Parameters.AddWithValue("@quantidade", itemPedido.Quantidade);
+        cmd.Parameters.AddWithValue("@preco_unit", itemPedido.PrecoUnit);
+        cmd.Parameters.AddWithValue("@pedido_id", itemPedido.PedidoId);
+
+        cmd.Connection = _mySqlConnection;
+
+        itemPedido.Id = Convert.ToInt32(cmd.ExecuteScalar());
+        cmd.ExecuteReader();
     }
 
     public void Atualizar(ItemPedido itemPedido)
     {
-        throw new NotImplementedException();
+        InicializeDatabase();
+        MySqlCommand cmd = new MySqlCommand();
+
+        cmd.CommandText = "UPDATE SET produto = @produto, quantidade = @quantidade, preco_unit = @preco_unit, pedido_id = @pedido_idWHERE id = @id";
+
+        cmd.Parameters.AddWithValue("@produto", itemPedido.Produto);
+        cmd.Parameters.AddWithValue("@quantidade", itemPedido.Quantidade);
+        cmd.Parameters.AddWithValue("@preco_unit", itemPedido.PrecoUnit);
+        cmd.Parameters.AddWithValue("@pedido_id", itemPedido.PedidoId);
+        cmd.Parameters.AddWithValue("@id", itemPedido.Id);
+
+        cmd.Connection = _mySqlConnection;
+        cmd.ExecuteReader();
     }
 
     public void Excluir(int id)
     {
-        throw new NotImplementedException();
+        InicializeDatabase();
+        MySqlCommand cmd = new MySqlCommand();
+
+        cmd.CommandText = "DELETE * FROM ItemPedido WHERE id = @id";
+
+        cmd.Parameters.AddWithValue("@id", id);
+
+        cmd.Connection = _mySqlConnection;
+        cmd.ExecuteReader();
     }
 
     public ItemPedido ObterPorId(int id)
     {
-        throw new NotImplementedException();
+        InicializeDatabase();
+        MySqlCommand cmd = new MySqlCommand();
+
+        cmd.CommandText = "SELECT * FROM pedido WHERE id = @id";
+
+        cmd.Connection = _mySqlConnection;
+        cmd.Parameters.AddWithValue("@id", id);
+
+        var reader = cmd.ExecuteReader();
+
+        if (reader.Read())
+        {
+            return new ItemPedido(Convert.ToInt32(reader["id"]),
+                Convert.ToString(reader["produto"]),
+                Convert.ToInt32(reader["quantidade"]),
+                Convert.ToDouble(reader["preco_unit"]),
+                Convert.ToInt32(reader["pedido_id"])
+            );
+        }
+
+        return null;
     }
 
     public IEnumerable<ItemPedido> ListarTodos()
     {
-        throw new NotImplementedException();
+        List<ItemPedido> itemPedidos = new List<ItemPedido>();
+
+        InicializeDatabase();
+        MySqlCommand cmd = new MySqlCommand();
+
+        cmd.CommandText = "SELECT * FROM ItemPedido";
+
+        cmd.Connection = _mySqlConnection;
+        var reader = cmd.ExecuteReader();
+
+        while (reader.Read())
+        {
+            ItemPedido itemPedido = new ItemPedido(Convert.ToInt32(reader["id"]),
+                Convert.ToString(reader["produto"]),
+                Convert.ToInt32(reader["quantidade"]),
+                Convert.ToDouble(reader["preco_unit"]),
+                Convert.ToInt32(reader["pedido_id"])
+            );
+
+            itemPedidos.Add(itemPedido);
+        }
+
+        return itemPedidos;
     }
 }

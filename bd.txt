@@ -14,7 +14,7 @@ CREATE TABLE ItemPedido (
 	id int AUTO_INCREMENT,
     produto varchar(255),
     quantidade int, 
-    preco_unit decimal,
+    preco_unit decimal, // O professor disse que n era pra abreviar nada
     pedido_id int, 
     PRIMARY KEY(id),
 	FOREIGN KEY (pedido_id) REFERENCES Pedido(id)

@@ -2,11 +2,11 @@ namespace Gamification03.Model;
 
 public class ItemPedido
 {
-    public int Id { get; private set; }
-    public string Produto { get; private set; }
-    public int Quantidade { get; private set; }
-    public double PrecoUnit { get; private set; }
-    public int PedidoId { get; private set; }
+    public int Id { get; set; }
+    public string Produto { get; set; }
+    public int Quantidade { get; set; }
+    public double PrecoUnit { get; set; }
+    public int PedidoId { get; set; }
 
     public ItemPedido(int id, string produto, int quantidade, double precoUnit, int pedidoId)
     {
