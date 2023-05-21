@@ -15,14 +15,14 @@ public class ItemPedido
             throw new ArgumentException("Nome do produto não pode ser vazio ou nulo.");
         }
         if (quantidade <= 0)
-         {
-             throw new ArgumentException("Quantidade do produto deve ser maior que zero.");
-         }
-         if (precoUnit <= 0)
-         {
-             throw new ArgumentException("Preço unitário deve ser maior que zero.");
-         }
-         
+        {
+            throw new ArgumentException("Quantidade do produto deve ser maior que zero.");
+        }
+        if (precoUnit <= 0)
+        {
+            throw new ArgumentException("Preço unitário deve ser maior que zero.");
+        }
+        
         Id = id;
         Produto = produto;
         Quantidade = quantidade;

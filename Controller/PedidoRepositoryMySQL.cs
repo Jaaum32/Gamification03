@@ -95,7 +95,55 @@ public class PedidoRepositoryMySQL : IPedidoRepository
 
         return null;
     }
+    
+    public Pedido ObterPorData(string data)
+    {
+        InicializeDatabase();
+        MySqlCommand cmd = new MySqlCommand();
 
+        cmd.CommandText = "SELECT * FROM pedido WHERE data = @data";
+
+        cmd.Connection = _mySqlConnection;
+        cmd.Parameters.AddWithValue("@data", data);
+
+        var reader = cmd.ExecuteReader();
+
+        if (reader.Read())
+        {
+            return new Pedido(
+                Convert.ToInt32(reader["id"]),
+                data,
+                Convert.ToString(reader["cliente"]),
+                Convert.ToString(reader["status_pedido"])
+            );
+        }
+
+        return null;
+    }
+    public Pedido ObterPorCliente(string cliente)
+    {
+        InicializeDatabase();
+        MySqlCommand cmd = new MySqlCommand();
+
+        cmd.CommandText = "SELECT * FROM pedido WHERE data = @cliente";
+
+        cmd.Connection = _mySqlConnection;
+        cmd.Parameters.AddWithValue("@cliente", cliente);
+
+        var reader = cmd.ExecuteReader();
+
+        if (reader.Read())
+        {
+            return new Pedido(
+                Convert.ToInt32(reader["id"]),
+                Convert.ToString(reader["data"]),
+                cliente,
+                Convert.ToString(reader["status_pedido"])
+            );
+        }
+
+        return null;
+    }
     public IEnumerable<Pedido> ListarTodos()
     {
         List<Pedido> pedidos = new List<Pedido>();
