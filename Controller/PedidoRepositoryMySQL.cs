@@ -86,7 +86,7 @@ public class PedidoRepositoryMySQL : IPedidoRepository
 
         if (reader.Read())
         {
-            return new Pedido(id,
+            return new Pedido(
                 Convert.ToString(reader["data"]),
                 Convert.ToString(reader["cliente"]),
                 Convert.ToString(reader["status_pedido"])
@@ -96,7 +96,7 @@ public class PedidoRepositoryMySQL : IPedidoRepository
         return null;
     }
     
-    public Pedido ObterPorData(string data)
+    public Pedido ObterPorData(string? data)
     {
         InicializeDatabase();
         MySqlCommand cmd = new MySqlCommand();
@@ -111,7 +111,6 @@ public class PedidoRepositoryMySQL : IPedidoRepository
         if (reader.Read())
         {
             return new Pedido(
-                Convert.ToInt32(reader["id"]),
                 data,
                 Convert.ToString(reader["cliente"]),
                 Convert.ToString(reader["status_pedido"])
@@ -120,7 +119,7 @@ public class PedidoRepositoryMySQL : IPedidoRepository
 
         return null;
     }
-    public Pedido ObterPorCliente(string cliente)
+    public Pedido ObterPorCliente(string? cliente)
     {
         InicializeDatabase();
         MySqlCommand cmd = new MySqlCommand();
@@ -135,7 +134,6 @@ public class PedidoRepositoryMySQL : IPedidoRepository
         if (reader.Read())
         {
             return new Pedido(
-                Convert.ToInt32(reader["id"]),
                 Convert.ToString(reader["data"]),
                 cliente,
                 Convert.ToString(reader["status_pedido"])
@@ -158,7 +156,7 @@ public class PedidoRepositoryMySQL : IPedidoRepository
 
         while (reader.Read())
         {
-            Pedido pedido = new Pedido(Convert.ToInt32(reader["id"]),
+            Pedido pedido = new Pedido(
                 Convert.ToString(reader["data"]),
                 Convert.ToString(reader["cliente"]),
                 Convert.ToString(reader["status_pedido"])
