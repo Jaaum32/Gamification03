@@ -3,12 +3,12 @@ namespace Gamification03.Model;
 public class ItemPedido
 {
     public int Id { get; set; }
-    public string Produto { get; set; }
+    public string? Produto { get; set; }
     public int Quantidade { get; set; }
     public double PrecoUnit { get; set; }
     public int PedidoId { get; set; }
 
-    public ItemPedido(int id, string produto, int quantidade, double precoUnit, int pedidoId)
+    public ItemPedido(string? produto, int quantidade, double precoUnit, int pedidoId)
     {
         if (string.IsNullOrWhiteSpace(produto))
         {
@@ -23,7 +23,6 @@ public class ItemPedido
             throw new ArgumentException("Preço unitário deve ser maior que zero.");
         }
         
-        Id = id;
         Produto = produto;
         Quantidade = quantidade;
         PrecoUnit = precoUnit;

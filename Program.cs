@@ -15,5 +15,7 @@ public class Erick
 
         Console.WriteLine("Id: " + b.Id + ",Data: " + b.Data + ",Cliente: " + b.Cliente + ",Status: " +
                           b.Status);
+        
+        
     }
 }

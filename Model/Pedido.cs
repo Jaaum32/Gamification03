@@ -3,11 +3,11 @@ namespace Gamification03.Model;
 public class Pedido
 {
     public int Id { get; set; }
-    public string Data { get; set; }
-    public string Cliente { get; set; }
-    public string Status { get; set; }
+    public string? Data { get; set; }
+    public string? Cliente { get; set; }
+    public string? Status { get; set; }
 
-    public Pedido(int id, string data, string cliente, string status)
+    public Pedido(string? data, string? cliente, string? status)
     {
         if (string.IsNullOrWhiteSpace(data))
         {
@@ -21,10 +21,11 @@ public class Pedido
         {
             throw new ArgumentException("Status não pode ser vazio ou nulo.");
         }
-
-        Id = id;
+        
         Data = data;
         Cliente = cliente;
         Status = status;
     }
+
+    
 }
