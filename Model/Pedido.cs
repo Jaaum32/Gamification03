@@ -7,9 +7,7 @@ public class Pedido
     public string Cliente { get; set; }
     public string Status { get; set; }
 
-    public List<ItemPedido> ItensDoPedido;
-
-    public Pedido(int id, string data, string cliente, string status, List<ItemPedido> itensDoPedido)
+    public Pedido(int id, string data, string cliente, string status)
     {
         if (string.IsNullOrWhiteSpace(data))
         {
@@ -28,7 +26,5 @@ public class Pedido
         Data = data;
         Cliente = cliente;
         Status = status;
-        ItensDoPedido = itensDoPedido;
-
     }
 }
