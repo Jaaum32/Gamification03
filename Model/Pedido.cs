@@ -2,12 +2,12 @@ namespace Gamification03.Model;
 
 public class Pedido
 {
-    private int Id { get; set; }
-    private string Data { get; set; }
-    private string Cliente { get; set; }
-    private string Status { get; set; }
+    public int Id { get; set; }
+    public string Data { get; set; }
+    public string Cliente { get; set; }
+    public string Status { get; set; }
 
-    private List<ItemPedido> ItensDoPedido;
+    public List<ItemPedido> ItensDoPedido;
 
     public Pedido(int id, string data, string cliente, string status, List<ItemPedido> itensDoPedido)
     {

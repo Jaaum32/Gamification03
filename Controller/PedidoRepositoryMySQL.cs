@@ -89,7 +89,7 @@ public class PedidoRepositoryMySQL : IPedidoRepository
             return new Pedido(id,
                 Convert.ToString(reader["data"]),
                 Convert.ToString(reader["cliente"]),
-                Convert.ToString(reader["status_pedido"])
+                Convert.ToString(reader["status_pedido"]),
             );
         }
 
