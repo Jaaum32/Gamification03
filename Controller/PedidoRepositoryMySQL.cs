@@ -1,14 +1,13 @@
-using System.Runtime.InteropServices.JavaScript;
 using Gamification03.Interfaces;
 using Gamification03.Model;
 using MySql.Data.MySqlClient;
 
 namespace Gamification03.Controller;
 
-public class PedidoRepositoryMySQL : IPedidoRepository
+public class PedidoRepositoryMySql : IPedidoRepository
 {
     private MySqlConnection _mySqlConnection =
-        new MySqlConnection("Persist Security Info=False;server=localhost;database=gamefication;uid=root;pwd=260405");
+        new MySqlConnection("Persist Security Info=False;server=localhost;database=gamefication;uid=root;pwd=0406");
 
     private void InicializeDatabase()
     {
@@ -17,9 +16,9 @@ public class PedidoRepositoryMySQL : IPedidoRepository
             //abre a conexao
             _mySqlConnection.Open();
         }
-        catch (System.Exception e)
+        catch (Exception e)
         {
-            Console.WriteLine(e.Message.ToString());
+            Console.WriteLine(e.Message);
         }
     }
 
@@ -27,7 +26,6 @@ public class PedidoRepositoryMySQL : IPedidoRepository
     {
         InicializeDatabase();
         MySqlCommand cmd = new MySqlCommand();
-        MySqlDataReader dr;
 
         cmd.CommandText =
             "INSERT INTO PEDIDO(data, cliente, status_pedido) VALUES(@data, @nome, @status); SELECT LAST_INSERT_ID();";
@@ -40,15 +38,15 @@ public class PedidoRepositoryMySQL : IPedidoRepository
 
         pedido.Id = Convert.ToInt32(cmd.ExecuteScalar());
         cmd.ExecuteReader();
+        _mySqlConnection.Close();
     }
 
     public void Atualizar(Pedido pedido)
     {
         InicializeDatabase();
         MySqlCommand cmd = new MySqlCommand();
-        MySqlDataReader dr;
 
-        cmd.CommandText = "UPDATE SET data = @data, nome = @nome, status @status WHERE id = @id";
+        cmd.CommandText = "UPDATE Pedido SET data = @data, nome = @nome, status = @status WHERE id = @id";
 
         cmd.Parameters.AddWithValue("@data", pedido.Data);
         cmd.Parameters.AddWithValue("@nome", pedido.Cliente);
@@ -57,42 +55,45 @@ public class PedidoRepositoryMySQL : IPedidoRepository
 
         cmd.Connection = _mySqlConnection;
         cmd.ExecuteReader();
+        _mySqlConnection.Close();
     }
     
     public void AtualizarStatus(int id, string? status)
     {
         InicializeDatabase();
         MySqlCommand cmd = new MySqlCommand();
-        MySqlDataReader dr;
 
-        cmd.CommandText = "UPDATE Pedido SET status = @status WHERE id = @id";
+        cmd.CommandText = "UPDATE Pedido SET status_pedido1 = @status WHERE id = @id";
 
         cmd.Parameters.AddWithValue("@status", status);
         cmd.Parameters.AddWithValue("@id", id);
 
         cmd.Connection = _mySqlConnection;
         cmd.ExecuteReader();
+        _mySqlConnection.Close();
     }
 
     public void Excluir(int id)
     {
         InicializeDatabase();
         MySqlCommand cmd = new MySqlCommand();
-        MySqlDataReader dr;
 
-        cmd.CommandText = "DELETE * FROM ItemPedido WHERE pedido_id = @id";
+        cmd.CommandText = "DELETE FROM ItemPedido WHERE pedido_id = @pedido_id";
 
-        cmd.Parameters.AddWithValue("@id", id);
+        cmd.Parameters.AddWithValue("@pedido_id", id);
 
         cmd.Connection = _mySqlConnection;
         cmd.ExecuteReader();
+        _mySqlConnection.Close();
         
-        cmd.CommandText = "DELETE * FROM pedido WHERE id = @id";
+        InicializeDatabase();
+        cmd.CommandText = "DELETE FROM pedido WHERE id = @id";
 
         cmd.Parameters.AddWithValue("@id", id);
-
+        
         cmd.Connection = _mySqlConnection;
         cmd.ExecuteReader();
+        _mySqlConnection.Close();
     }
 
     public Pedido ObterPorId(int id)
@@ -115,11 +116,12 @@ public class PedidoRepositoryMySQL : IPedidoRepository
                 Convert.ToString(reader["status_pedido"])
             );
         }
-
-        return null;
+        
+        _mySqlConnection.Close();
+        return null!;
     }
     
-    public IEnumerable<Pedido> ObterPorNome(String nome)
+    public IEnumerable<Pedido> ObterPorNome(string nome)
     {
         List<Pedido> pedidos = new List<Pedido>();
         
@@ -129,7 +131,7 @@ public class PedidoRepositoryMySQL : IPedidoRepository
         cmd.CommandText = "SELECT * FROM pedido WHERE cliente LIKE @nome";
 
         cmd.Connection = _mySqlConnection;
-        cmd.Parameters.AddWithValue("@nome", nome);
+        cmd.Parameters.AddWithValue("@nome", '%' + nome + '%');
 
         var reader = cmd.ExecuteReader();
 
@@ -143,7 +145,8 @@ public class PedidoRepositoryMySQL : IPedidoRepository
 
             pedidos.Add(pedido);
         }
-
+        
+        _mySqlConnection.Close();
         return pedidos;
     }
     
@@ -154,10 +157,10 @@ public class PedidoRepositoryMySQL : IPedidoRepository
         InicializeDatabase();
         MySqlCommand cmd = new MySqlCommand();
 
-        cmd.CommandText = "SELECT * FROM pedido WHERE status_pedido @status";
+        cmd.CommandText = "SELECT * FROM pedido WHERE status_pedido = @status";
 
         cmd.Connection = _mySqlConnection;
-        cmd.Parameters.AddWithValue("@nome", status);
+        cmd.Parameters.AddWithValue("@status", status);
 
         var reader = cmd.ExecuteReader();
 
@@ -171,7 +174,8 @@ public class PedidoRepositoryMySQL : IPedidoRepository
 
             pedidos.Add(pedido);
         }
-
+        
+        _mySqlConnection.Close();
         return pedidos;
     }
     
@@ -199,7 +203,8 @@ public class PedidoRepositoryMySQL : IPedidoRepository
 
             pedidos.Add(pedido);
         }
-
+        
+        _mySqlConnection.Close();
         return pedidos;
     }
 
@@ -225,7 +230,8 @@ public class PedidoRepositoryMySQL : IPedidoRepository
 
             pedidos.Add(pedido);
         }
-
+        
+        _mySqlConnection.Close();
         return pedidos;
     }
 }

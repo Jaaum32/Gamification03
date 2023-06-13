@@ -1,22 +1,21 @@
 using Gamification03.Interfaces;
 using Gamification03.Model;
-using System.Data;
 using MySql.Data.MySqlClient;
 
 namespace Gamification03.Controller;
 
-public class ItemPedidoRepositoryMySQL : IItemPedidoRepository
+public class ItemPedidoRepositoryMySql : IItemPedidoRepository
 {
-    private MySqlConnection _mySqlConnection = new MySqlConnection("Persist Security Info=False;server=localhost;database=gamefication;uid=root;pwd=260405");
+    private MySqlConnection _mySqlConnection = new MySqlConnection("Persist Security Info=False;server=localhost;database=gamefication;uid=root;pwd=0406");
     private void InicializeDatabase()
     {
         try{
             //abre a conexao
             _mySqlConnection.Open();
         }
-        catch(System.Exception e)
+        catch(Exception e)
         {
-            Console.WriteLine(e.Message.ToString());
+            Console.WriteLine(e.Message);
         }
     }
     
@@ -26,7 +25,7 @@ public class ItemPedidoRepositoryMySQL : IItemPedidoRepository
         MySqlCommand cmd = new MySqlCommand();
 
         cmd.CommandText =
-            "INSERT INTO PEDIDO(produto, quantidade, preco_unit, pedido_id) VALUES(@produto, @quantidade, @preco_unit, @pedido_id); SELECT LAST_INSERT_ID();";
+            "INSERT INTO ITEMPEDIDO(produto, quantidade, preco_unit, pedido_id) VALUES(@produto, @quantidade, @preco_unit, @pedido_id); SELECT LAST_INSERT_ID();";
 
         cmd.Parameters.AddWithValue("@produto", itemPedido.Produto);
         cmd.Parameters.AddWithValue("@quantidade", itemPedido.Quantidade);
@@ -37,6 +36,7 @@ public class ItemPedidoRepositoryMySQL : IItemPedidoRepository
 
         itemPedido.Id = Convert.ToInt32(cmd.ExecuteScalar());
         cmd.ExecuteReader();
+        _mySqlConnection.Close();
     }
 
     public void Atualizar(ItemPedido itemPedido)
@@ -54,6 +54,7 @@ public class ItemPedidoRepositoryMySQL : IItemPedidoRepository
 
         cmd.Connection = _mySqlConnection;
         cmd.ExecuteReader();
+        _mySqlConnection.Close();
     }
 
     public void Excluir(int id)
@@ -67,6 +68,7 @@ public class ItemPedidoRepositoryMySQL : IItemPedidoRepository
 
         cmd.Connection = _mySqlConnection;
         cmd.ExecuteReader();
+        _mySqlConnection.Close();
     }
 
     public ItemPedido ObterPorId(int id)
@@ -90,8 +92,9 @@ public class ItemPedidoRepositoryMySQL : IItemPedidoRepository
                 Convert.ToInt32(reader["pedido_id"])
             );
         }
-
-        return null;
+        
+        _mySqlConnection.Close();
+        return null!;
     }
 
     public IEnumerable<ItemPedido> ListarTodos()
@@ -117,11 +120,12 @@ public class ItemPedidoRepositoryMySQL : IItemPedidoRepository
 
             itemPedidos.Add(itemPedido);
         }
-
+        
+        _mySqlConnection.Close();
         return itemPedidos;
     }
     
-    public IEnumerable<ItemPedido> ListarTodos(String pedido_id)
+    public IEnumerable<ItemPedido> ListarTodosPorId(int pedidoId)
     {
         List<ItemPedido> itemPedidos = new List<ItemPedido>();
 
@@ -131,7 +135,7 @@ public class ItemPedidoRepositoryMySQL : IItemPedidoRepository
         cmd.CommandText = "SELECT * FROM ItemPedido WHERE pedido_id = @pedido_id";
 
         cmd.Connection = _mySqlConnection;
-        cmd.Parameters.AddWithValue("@pedido_id", pedido_id);
+        cmd.Parameters.AddWithValue("@pedido_id", pedidoId);
         var reader = cmd.ExecuteReader();
 
         while (reader.Read())
@@ -145,7 +149,8 @@ public class ItemPedidoRepositoryMySQL : IItemPedidoRepository
 
             itemPedidos.Add(itemPedido);
         }
-
+        
+        _mySqlConnection.Close();
         return itemPedidos;
     }
 }
