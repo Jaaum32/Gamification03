@@ -146,6 +146,62 @@ public class PedidoRepositoryMySQL : IPedidoRepository
 
         return pedidos;
     }
+    
+    public IEnumerable<Pedido> ObterPorStatus(String status)
+    {
+        List<Pedido> pedidos = new List<Pedido>();
+        
+        InicializeDatabase();
+        MySqlCommand cmd = new MySqlCommand();
+
+        cmd.CommandText = "SELECT * FROM pedido WHERE status_pedido @status";
+
+        cmd.Connection = _mySqlConnection;
+        cmd.Parameters.AddWithValue("@nome", status);
+
+        var reader = cmd.ExecuteReader();
+
+        while (reader.Read())
+        {
+            Pedido pedido = new Pedido(Convert.ToInt32(reader["id"]),
+                Convert.ToString(reader["data"]),
+                Convert.ToString(reader["cliente"]),
+                Convert.ToString(reader["status_pedido"])
+            );
+
+            pedidos.Add(pedido);
+        }
+
+        return pedidos;
+    }
+    
+    public IEnumerable<Pedido> ObterPorData(String data)
+    {
+        List<Pedido> pedidos = new List<Pedido>();
+        
+        InicializeDatabase();
+        MySqlCommand cmd = new MySqlCommand();
+
+        cmd.CommandText = "SELECT * FROM pedido WHERE data = @data";
+
+        cmd.Connection = _mySqlConnection;
+        cmd.Parameters.AddWithValue("@data", data);
+
+        var reader = cmd.ExecuteReader();
+
+        while (reader.Read())
+        {
+            Pedido pedido = new Pedido(Convert.ToInt32(reader["id"]),
+                Convert.ToString(reader["data"]),
+                Convert.ToString(reader["cliente"]),
+                Convert.ToString(reader["status_pedido"])
+            );
+
+            pedidos.Add(pedido);
+        }
+
+        return pedidos;
+    }
 
     public IEnumerable<Pedido> ListarTodos()
     {
