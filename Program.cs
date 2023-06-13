@@ -1,27 +1,22 @@
-<<<<<<< HEAD
-﻿using System.ComponentModel.Design;
+using System.ComponentModel.Design;
 using System.Data;
 using Gamification03.Controller;
 using Gamification03.Services;
-=======
-﻿using System.Data;
+using System.Data;
 using Gamification03.Controller;
->>>>>>> origin/master
 using Gamification03.Model;
 using MySql.Data.MySqlClient;
-
-
-<<<<<<< HEAD
+    
 public class Program
-=======
+
 public class Erick
->>>>>>> origin/master
+
 {
     public static void Main()
     {
         PedidoRepositoryMySQL a = new PedidoRepositoryMySQL();
-<<<<<<< HEAD
-        //GerenciamentoDePedido gerenciamento = new GerenciamentoDePedido();
+
+        GerenciamentoDePedido gerenciamento = new GerenciamentoDePedido();
 
         int sair = 0;
 
@@ -69,7 +64,7 @@ public class Erick
         Console.WriteLine("7 - Calcular valor de pedido");
         Console.WriteLine("0 - Sair");
         return Convert.ToInt32(Console.Read());
-=======
+
 
         var b = a.ObterPorId(1);
 
@@ -78,6 +73,6 @@ public class Erick
                           b.Status);
         
         
->>>>>>> origin/master
+
     }
 }
