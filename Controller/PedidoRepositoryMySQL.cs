@@ -1,3 +1,4 @@
+using System.Runtime.InteropServices.JavaScript;
 using Gamification03.Interfaces;
 using Gamification03.Model;
 using MySql.Data.MySqlClient;
@@ -47,12 +48,27 @@ public class PedidoRepositoryMySQL : IPedidoRepository
         MySqlCommand cmd = new MySqlCommand();
         MySqlDataReader dr;
 
-        cmd.CommandText = "UPDATE SET data = @data, nome = @nome, status @status WHERE id = @id";
+        cmd.CommandText = "UPDATE Pedido SET data = @data, nome = @nome, status = @status WHERE id = @id";
 
         cmd.Parameters.AddWithValue("@data", pedido.Data);
         cmd.Parameters.AddWithValue("@nome", pedido.Cliente);
         cmd.Parameters.AddWithValue("@status", pedido.Status);
         cmd.Parameters.AddWithValue("@id", pedido.Id);
+
+        cmd.Connection = _mySqlConnection;
+        cmd.ExecuteReader();
+    }
+    
+    public void AtualizarStatus(int id, String status)
+    {
+        InicializeDatabase();
+        MySqlCommand cmd = new MySqlCommand();
+        MySqlDataReader dr;
+
+        cmd.CommandText = "UPDATE Pedido SET status = @status WHERE id = @id";
+
+        cmd.Parameters.AddWithValue("@status", status);
+        cmd.Parameters.AddWithValue("@id", id);
 
         cmd.Connection = _mySqlConnection;
         cmd.ExecuteReader();
@@ -64,6 +80,13 @@ public class PedidoRepositoryMySQL : IPedidoRepository
         MySqlCommand cmd = new MySqlCommand();
         MySqlDataReader dr;
 
+        cmd.CommandText = "DELETE * FROM ItemPedido WHERE pedido_id = @id";
+
+        cmd.Parameters.AddWithValue("@id", id);
+
+        cmd.Connection = _mySqlConnection;
+        cmd.ExecuteReader();
+        
         cmd.CommandText = "DELETE * FROM pedido WHERE id = @id";
 
         cmd.Parameters.AddWithValue("@id", id);
@@ -94,6 +117,34 @@ public class PedidoRepositoryMySQL : IPedidoRepository
         }
 
         return null;
+    }
+    
+    public IEnumerable<Pedido> ObterPorNome(String nome)
+    {
+        List<Pedido> pedidos = new List<Pedido>();
+        
+        InicializeDatabase();
+        MySqlCommand cmd = new MySqlCommand();
+
+        cmd.CommandText = "SELECT * FROM pedido WHERE cliente LIKE @nome";
+
+        cmd.Connection = _mySqlConnection;
+        cmd.Parameters.AddWithValue("@nome", nome);
+
+        var reader = cmd.ExecuteReader();
+
+        while (reader.Read())
+        {
+            Pedido pedido = new Pedido(Convert.ToInt32(reader["id"]),
+                Convert.ToString(reader["data"]),
+                Convert.ToString(reader["cliente"]),
+                Convert.ToString(reader["status_pedido"])
+            );
+
+            pedidos.Add(pedido);
+        }
+
+        return pedidos;
     }
 
     public IEnumerable<Pedido> ListarTodos()
