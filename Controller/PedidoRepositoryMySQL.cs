@@ -1,3 +1,4 @@
+using System.Runtime.InteropServices.JavaScript;
 using Gamification03.Interfaces;
 using Gamification03.Model;
 using MySql.Data.MySqlClient;
@@ -57,6 +58,21 @@ public class PedidoRepositoryMySQL : IPedidoRepository
         cmd.Connection = _mySqlConnection;
         cmd.ExecuteReader();
     }
+    
+    public void AtualizarStatus(int id, String status)
+    {
+        InicializeDatabase();
+        MySqlCommand cmd = new MySqlCommand();
+        MySqlDataReader dr;
+
+        cmd.CommandText = "UPDATE Pedido SET status = @status WHERE id = @id";
+
+        cmd.Parameters.AddWithValue("@status", status);
+        cmd.Parameters.AddWithValue("@id", id);
+
+        cmd.Connection = _mySqlConnection;
+        cmd.ExecuteReader();
+    }
 
     public void Excluir(int id)
     {
@@ -64,6 +80,13 @@ public class PedidoRepositoryMySQL : IPedidoRepository
         MySqlCommand cmd = new MySqlCommand();
         MySqlDataReader dr;
 
+        cmd.CommandText = "DELETE * FROM ItemPedido WHERE pedido_id = @id";
+
+        cmd.Parameters.AddWithValue("@id", id);
+
+        cmd.Connection = _mySqlConnection;
+        cmd.ExecuteReader();
+        
         cmd.CommandText = "DELETE * FROM pedido WHERE id = @id";
 
         cmd.Parameters.AddWithValue("@id", id);
@@ -86,7 +109,7 @@ public class PedidoRepositoryMySQL : IPedidoRepository
 
         if (reader.Read())
         {
-            return new Pedido(
+            return new Pedido(id,
                 Convert.ToString(reader["data"]),
                 Convert.ToString(reader["cliente"]),
                 Convert.ToString(reader["status_pedido"])
@@ -96,52 +119,34 @@ public class PedidoRepositoryMySQL : IPedidoRepository
         return null;
     }
     
-    public Pedido ObterPorData(string? data)
+    public IEnumerable<Pedido> ObterPorNome(String nome)
     {
+        List<Pedido> pedidos = new List<Pedido>();
+        
         InicializeDatabase();
         MySqlCommand cmd = new MySqlCommand();
 
-        cmd.CommandText = "SELECT * FROM pedido WHERE data = @data";
+        cmd.CommandText = "SELECT * FROM pedido WHERE cliente LIKE @nome";
 
         cmd.Connection = _mySqlConnection;
-        cmd.Parameters.AddWithValue("@data", data);
+        cmd.Parameters.AddWithValue("@nome", nome);
 
         var reader = cmd.ExecuteReader();
 
-        if (reader.Read())
+        while (reader.Read())
         {
-            return new Pedido(
-                data,
+            Pedido pedido = new Pedido(Convert.ToInt32(reader["id"]),
+                Convert.ToString(reader["data"]),
                 Convert.ToString(reader["cliente"]),
                 Convert.ToString(reader["status_pedido"])
             );
+
+            pedidos.Add(pedido);
         }
 
-        return null;
+        return pedidos;
     }
-    public Pedido ObterPorCliente(string? cliente)
-    {
-        InicializeDatabase();
-        MySqlCommand cmd = new MySqlCommand();
 
-        cmd.CommandText = "SELECT * FROM pedido WHERE data = @cliente";
-
-        cmd.Connection = _mySqlConnection;
-        cmd.Parameters.AddWithValue("@cliente", cliente);
-
-        var reader = cmd.ExecuteReader();
-
-        if (reader.Read())
-        {
-            return new Pedido(
-                Convert.ToString(reader["data"]),
-                cliente,
-                Convert.ToString(reader["status_pedido"])
-            );
-        }
-
-        return null;
-    }
     public IEnumerable<Pedido> ListarTodos()
     {
         List<Pedido> pedidos = new List<Pedido>();
@@ -156,7 +161,7 @@ public class PedidoRepositoryMySQL : IPedidoRepository
 
         while (reader.Read())
         {
-            Pedido pedido = new Pedido(
+            Pedido pedido = new Pedido(Convert.ToInt32(reader["id"]),
                 Convert.ToString(reader["data"]),
                 Convert.ToString(reader["cliente"]),
                 Convert.ToString(reader["status_pedido"])
