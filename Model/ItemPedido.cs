@@ -8,7 +8,7 @@ public class ItemPedido
     public double PrecoUnit { get; set; }
     public int PedidoId { get; set; }
 
-    public ItemPedido(string? produto, int quantidade, double precoUnit, int pedidoId)
+    public ItemPedido(int? id, string? produto, int quantidade, double precoUnit, int pedidoId)
     {
         if (string.IsNullOrWhiteSpace(produto))
         {
