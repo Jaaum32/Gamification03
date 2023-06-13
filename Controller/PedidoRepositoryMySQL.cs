@@ -48,7 +48,7 @@ public class PedidoRepositoryMySQL : IPedidoRepository
         MySqlCommand cmd = new MySqlCommand();
         MySqlDataReader dr;
 
-        cmd.CommandText = "UPDATE Pedido SET data = @data, nome = @nome, status = @status WHERE id = @id";
+        cmd.CommandText = "UPDATE SET data = @data, nome = @nome, status @status WHERE id = @id";
 
         cmd.Parameters.AddWithValue("@data", pedido.Data);
         cmd.Parameters.AddWithValue("@nome", pedido.Cliente);
