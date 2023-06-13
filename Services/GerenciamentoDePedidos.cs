@@ -72,25 +72,29 @@ public class GerenciamentoDePedidos : IGerenciamentoDePedidoRepository
         {
             Console.Write("Cliente: ");
             string? cliente = Console.ReadLine();
-            
-            pedidos = _pr.ObterPorNome(cliente);
+
+            if (cliente != null) pedidos = _pr.ObterPorNome(cliente);
         }
         else if (filtro == "Status")
         {
             Console.Write("Status: ");
             string? status = Console.ReadLine();
 
-            pedidos = _pr.ObterPorStatus(status);
+            if (status != null) pedidos = _pr.ObterPorStatus(status);
         }
         else if (filtro == "Data")
         {
             Console.Write("Data do pedido: ");
             string? dataPedido = Console.ReadLine();
 
-            pedidos = _pr.ObterPorData(dataPedido);
+            if (dataPedido != null) pedidos = _pr.ObterPorData(dataPedido);
         }
 
-        Console.WriteLine(pedidos.ToString());
+        foreach (var pedido in pedidos)
+        {
+            Console.WriteLine(pedido.ToString());
+            
+        }
     }
 
     public void calcularValorPedido(List<ItemPedido> itensDoPedido)
