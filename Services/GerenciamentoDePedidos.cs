@@ -7,9 +7,9 @@ using Interfaces;
 
 public class GerenciamentoDePedidos : IGerenciamentoDePedidoRepository
 {
-    private readonly PedidoRepositoryMySQL _pr = new PedidoRepositoryMySQL();
-    private readonly ItemPedidoRepositoryMySQL _ipr = new ItemPedidoRepositoryMySQL();
-    public void criarPedido()
+    private readonly PedidoRepositoryMySql _pr = new PedidoRepositoryMySql();
+    private readonly ItemPedidoRepositoryMySql _ipr = new ItemPedidoRepositoryMySql();
+    public void CriarPedido()
     {
         Console.WriteLine("PREENCHA OS DADOS DO PEDIDO:");
         Console.Write("Data do pedido: ");
@@ -25,7 +25,7 @@ public class GerenciamentoDePedidos : IGerenciamentoDePedidoRepository
 
         _pr.Adicionar(pedido);
     }
-    public void adicionarItemPedidos()
+    public void AdicionarItemPedidos()
     {
         Console.WriteLine("PREENCHA OS DADOS DO ITEM:");
         Console.Write("ID do pedido: ");
@@ -45,7 +45,7 @@ public class GerenciamentoDePedidos : IGerenciamentoDePedidoRepository
         _ipr.Adicionar(itemPedido);
     }
 
-    public void atualizarStatus()
+    public void AtualizarStatus()
     {
         Console.Write("ID do pedido: ");
         int pedidoId = Convert.ToInt32(Console.ReadLine());
@@ -56,7 +56,7 @@ public class GerenciamentoDePedidos : IGerenciamentoDePedidoRepository
         _pr.AtualizarStatus(pedidoId, status);
     }
 
-    public void removerPedido()
+    public void RemoverPedido()
     {   
         Console.Write("ID do pedido: ");
         int pedidoId = Convert.ToInt32(Console.ReadLine());
@@ -64,37 +64,59 @@ public class GerenciamentoDePedidos : IGerenciamentoDePedidoRepository
         _pr.Excluir(pedidoId);
     }
 
-    public void listarPedidos(string filtro)
+    public void ListarPedidos(string filtro)
     {
         IEnumerable<Pedido> pedidos = new List<Pedido>();
-            
+
         if (filtro == "Cliente")
         {
             Console.Write("Cliente: ");
             string? cliente = Console.ReadLine();
-            
-            pedidos = _pr.ObterPorNome(cliente);
+
+            if (cliente != null) pedidos = _pr.ObterPorNome(cliente);
         }
         else if (filtro == "Status")
         {
             Console.Write("Status: ");
             string? status = Console.ReadLine();
 
-            pedidos = _pr.ObterPorStatus(status);
+            if (status != null) pedidos = _pr.ObterPorStatus(status);
         }
         else if (filtro == "Data")
         {
             Console.Write("Data do pedido: ");
             string? dataPedido = Console.ReadLine();
 
-            pedidos = _pr.ObterPorData(dataPedido);
+            if (dataPedido != null) pedidos = _pr.ObterPorData(dataPedido);
         }
 
-        Console.WriteLine(pedidos.ToString());
+        foreach (var pedido in pedidos)
+        {
+            Console.WriteLine(pedido.ToString());
+
+            IEnumerable<ItemPedido> itens = _ipr.ListarTodosPorId(pedido.Id);
+
+            foreach (var item in itens)
+            {
+                Console.WriteLine(item.ToString());
+            }
+        }
     }
 
-    public void calcularValorPedido(List<ItemPedido> itensDoPedido)
+    public void CalcularValorPedido()
     {
+        double sum = 0;
         
+        Console.Write("ID do pedido: ");
+        int pedidoId = Convert.ToInt32(Console.ReadLine());
+        
+        IEnumerable<ItemPedido> itens = _ipr.ListarTodosPorId(pedidoId);
+
+        foreach (var item in itens)
+        {
+            sum += item.Quantidade * item.PrecoUnit;
+        }
+        
+        Console.WriteLine("Valor Total Pedido: " + sum);
     }
 }
