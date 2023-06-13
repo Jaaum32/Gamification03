@@ -50,29 +50,47 @@ public class GerenciamentoDePedidos : IGerenciamentoDePedidoRepository
         Console.Write("ID do pedido: ");
         int pedidoId = Convert.ToInt32(Console.ReadLine());
         
-        
-        
-        Console.WriteLine("PREENCHA OS DADOS DO PEDIDO:");
-        Console.Write("Data do pedido: ");
-        string? dataPedido = Console.ReadLine();
-
-        Console.Write("Cliente: ");
-        string? cliente = Console.ReadLine();
-
         Console.Write("Status: ");
         string? status = Console.ReadLine();
-        
-        Pedido pedido = new Pedido(dataPedido, cliente, status);
+
+        _pr.AtualizarStatus(pedidoId, status);
     }
 
-    public void removerPedido(List<ItemPedido> itensDoPedido, ItemPedido item)
-    {
+    public void removerPedido()
+    {   
+        Console.Write("ID do pedido: ");
+        int pedidoId = Convert.ToInt32(Console.ReadLine());
         
+        _pr.Excluir(pedidoId);
     }
 
     public void listarPedidos(string filtro)
     {
-        
+        IEnumerable<Pedido> pedidos = new List<Pedido>();
+            
+        if (filtro == "Cliente")
+        {
+            Console.Write("Cliente: ");
+            string? cliente = Console.ReadLine();
+            
+            pedidos = _pr.ObterPorNome(cliente);
+        }
+        else if (filtro == "Status")
+        {
+            Console.Write("Status: ");
+            string? status = Console.ReadLine();
+
+            pedidos = _pr.ObterPorStatus(status);
+        }
+        else if (filtro == "Data")
+        {
+            Console.Write("Data do pedido: ");
+            string? dataPedido = Console.ReadLine();
+
+            pedidos = _pr.ObterPorData(dataPedido);
+        }
+
+        Console.WriteLine(pedidos.ToString());
     }
 
     public void calcularValorPedido(List<ItemPedido> itensDoPedido)

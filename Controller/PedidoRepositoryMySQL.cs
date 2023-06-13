@@ -59,7 +59,7 @@ public class PedidoRepositoryMySQL : IPedidoRepository
         cmd.ExecuteReader();
     }
     
-    public void AtualizarStatus(int id, String status)
+    public void AtualizarStatus(int id, string? status)
     {
         InicializeDatabase();
         MySqlCommand cmd = new MySqlCommand();
