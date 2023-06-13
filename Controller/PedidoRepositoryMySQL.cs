@@ -39,7 +39,7 @@ public class PedidoRepositoryMySQL : IPedidoRepository
         cmd.Connection = _mySqlConnection;
 
         pedido.Id = Convert.ToInt32(cmd.ExecuteScalar());
-        cmd.ExecuteReader();
+        //cmd.ExecuteReader();
     }
 
     public void Atualizar(Pedido pedido)
