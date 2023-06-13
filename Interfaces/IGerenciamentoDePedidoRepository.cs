@@ -7,7 +7,7 @@ public interface IGerenciamentoDePedidoRepository
     void criarPedido();
     void adicionarItemPedidos();
     void atualizarStatus();
-    List<ItemPedido> removerPedido(List<ItemPedido> itensDoPedido, ItemPedido item);
+    void removerPedido(List<ItemPedido> itensDoPedido, ItemPedido item);
     void listarPedidos(string filtro);
-    double calcularValorPedido(List<ItemPedido> itensDoPedido);
+    void calcularValorPedido(List<ItemPedido> itensDoPedido);
 }

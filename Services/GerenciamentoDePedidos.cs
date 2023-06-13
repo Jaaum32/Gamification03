@@ -65,18 +65,18 @@ public class GerenciamentoDePedidos : IGerenciamentoDePedidoRepository
         Pedido pedido = new Pedido(dataPedido, cliente, status);
     }
 
-    public List<ItemPedido> removerPedido(List<ItemPedido> itensDoPedido, ItemPedido item)
+    public void removerPedido(List<ItemPedido> itensDoPedido, ItemPedido item)
     {
-        throw new NotImplementedException();
+        
     }
 
     public void listarPedidos(string filtro)
     {
-        throw new NotImplementedException();
+        
     }
 
-    public double calcularValorPedido(List<ItemPedido> itensDoPedido)
+    public void calcularValorPedido(List<ItemPedido> itensDoPedido)
     {
-        throw new NotImplementedException();
+        
     }
 }
