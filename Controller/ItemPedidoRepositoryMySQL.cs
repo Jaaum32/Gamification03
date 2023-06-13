@@ -120,4 +120,32 @@ public class ItemPedidoRepositoryMySQL : IItemPedidoRepository
 
         return itemPedidos;
     }
+    
+    public IEnumerable<ItemPedido> ListarTodos(String pedido_id)
+    {
+        List<ItemPedido> itemPedidos = new List<ItemPedido>();
+
+        InicializeDatabase();
+        MySqlCommand cmd = new MySqlCommand();
+
+        cmd.CommandText = "SELECT * FROM ItemPedido WHERE pedido_id = @pedido_id";
+
+        cmd.Connection = _mySqlConnection;
+        cmd.Parameters.AddWithValue("@pedido_id", pedido_id);
+        var reader = cmd.ExecuteReader();
+
+        while (reader.Read())
+        {
+            ItemPedido itemPedido = new ItemPedido(Convert.ToInt32(reader["id"]),
+                Convert.ToString(reader["produto"]),
+                Convert.ToInt32(reader["quantidade"]),
+                Convert.ToDouble(reader["preco_unit"]),
+                Convert.ToInt32(reader["pedido_id"])
+            );
+
+            itemPedidos.Add(itemPedido);
+        }
+
+        return itemPedidos;
+    }
 }
