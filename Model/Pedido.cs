@@ -7,7 +7,7 @@ public class Pedido
     public string? Cliente { get; set; }
     public string? Status { get; set; }
 
-    public Pedido(string? data, string? cliente, string? status)
+    public Pedido(int? id, string? data, string? cliente, string? status)
     {
         if (string.IsNullOrWhiteSpace(data))
         {
