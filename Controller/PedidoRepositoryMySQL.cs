@@ -234,4 +234,13 @@ public class PedidoRepositoryMySql : IPedidoRepository
         _mySqlConnection.Close();
         return pedidos;
     }
+
+    public void ImprimirTodos()
+    {
+        var listPedidos = ListarTodos();
+        foreach (var pedido in listPedidos)
+        {
+            Console.WriteLine(pedido);
+        }
+    }
 }

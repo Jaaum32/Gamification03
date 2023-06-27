@@ -50,7 +50,5 @@ public class ItemPedido
         PrecoUnit = precoUnit;
         PedidoId = pedidoId;
     }
-
-
 }
 

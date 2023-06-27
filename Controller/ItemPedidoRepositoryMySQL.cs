@@ -86,7 +86,7 @@ public class ItemPedidoRepositoryMySql : IItemPedidoRepository
 
         if (reader.Read())
         {
-            return new ItemPedido(Convert.ToInt32(reader["id"]),
+            return new ItemPedido(
                 Convert.ToString(reader["produto"]),
                 Convert.ToInt32(reader["quantidade"]),
                 Convert.ToDouble(reader["preco_unit"]),
@@ -112,7 +112,7 @@ public class ItemPedidoRepositoryMySql : IItemPedidoRepository
 
         while (reader.Read())
         {
-            ItemPedido itemPedido = new ItemPedido(Convert.ToInt32(reader["id"]),
+            ItemPedido itemPedido = new ItemPedido(
                 Convert.ToString(reader["produto"]),
                 Convert.ToInt32(reader["quantidade"]),
                 Convert.ToDouble(reader["preco_unit"]),
