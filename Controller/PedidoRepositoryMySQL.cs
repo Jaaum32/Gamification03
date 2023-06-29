@@ -1,13 +1,14 @@
 using Gamification03.Interfaces;
 using Gamification03.Model;
 using MySql.Data.MySqlClient;
+using System.Globalization;
 
 namespace Gamification03.Controller;
 
 public class PedidoRepositoryMySql : IPedidoRepository
 {
     private MySqlConnection _mySqlConnection =
-        new MySqlConnection("Persist Security Info=False;server=localhost;database=gamefication;uid=root;pwd=0406");
+        new MySqlConnection("Persist Security Info=False;server=localhost;database=gamefication;uid=root;pwd=1234");
 
     private void InicializeDatabase()
     {
@@ -57,7 +58,7 @@ public class PedidoRepositoryMySql : IPedidoRepository
         cmd.ExecuteReader();
         _mySqlConnection.Close();
     }
-    
+
     public void AtualizarStatus(int id, string? status)
     {
         InicializeDatabase();
@@ -85,12 +86,12 @@ public class PedidoRepositoryMySql : IPedidoRepository
         cmd.Connection = _mySqlConnection;
         cmd.ExecuteReader();
         _mySqlConnection.Close();
-        
+
         InicializeDatabase();
         cmd.CommandText = "DELETE FROM pedido WHERE id = @id";
 
         cmd.Parameters.AddWithValue("@id", id);
-        
+
         cmd.Connection = _mySqlConnection;
         cmd.ExecuteReader();
         _mySqlConnection.Close();
@@ -116,15 +117,15 @@ public class PedidoRepositoryMySql : IPedidoRepository
                 Convert.ToString(reader["status_pedido"])
             );
         }
-        
+
         _mySqlConnection.Close();
         return null!;
     }
-    
+
     public IEnumerable<Pedido> ObterPorNome(string nome)
     {
         List<Pedido> pedidos = new List<Pedido>();
-        
+
         InicializeDatabase();
         MySqlCommand cmd = new MySqlCommand();
 
@@ -145,15 +146,15 @@ public class PedidoRepositoryMySql : IPedidoRepository
 
             pedidos.Add(pedido);
         }
-        
+
         _mySqlConnection.Close();
         return pedidos;
     }
-    
+
     public IEnumerable<Pedido> ObterPorStatus(String status)
     {
         List<Pedido> pedidos = new List<Pedido>();
-        
+
         InicializeDatabase();
         MySqlCommand cmd = new MySqlCommand();
 
@@ -174,15 +175,15 @@ public class PedidoRepositoryMySql : IPedidoRepository
 
             pedidos.Add(pedido);
         }
-        
+
         _mySqlConnection.Close();
         return pedidos;
     }
-    
+
     public IEnumerable<Pedido> ObterPorData(String data)
     {
         List<Pedido> pedidos = new List<Pedido>();
-        
+
         InicializeDatabase();
         MySqlCommand cmd = new MySqlCommand();
 
@@ -203,7 +204,7 @@ public class PedidoRepositoryMySql : IPedidoRepository
 
             pedidos.Add(pedido);
         }
-        
+
         _mySqlConnection.Close();
         return pedidos;
     }
@@ -230,7 +231,7 @@ public class PedidoRepositoryMySql : IPedidoRepository
 
             pedidos.Add(pedido);
         }
-        
+
         _mySqlConnection.Close();
         return pedidos;
     }

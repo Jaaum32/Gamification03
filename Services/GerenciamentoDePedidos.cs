@@ -14,14 +14,14 @@ public class GerenciamentoDePedidos : IGerenciamentoDePedidoRepository
     public void CriarPedido()
     {
         Console.WriteLine("PREENCHA OS DADOS DO PEDIDO:");
-        Console.Write("Data do pedido (aaaa/mm/dd): ");
+        Console.Write("Data do pedido (dd/mm/aaaa): ");
         string? dataPedido = readData();
 
         Console.Write("Cliente: ");
         string? cliente = Console.ReadLine();
 
         Console.Write("Status [Entregue|Enviado|Pendente]: ");
-        string? status = Console.ReadLine();
+        string? status = readStatus();
 
         Pedido pedido = new Pedido(dataPedido, cliente, status);
 
@@ -30,16 +30,24 @@ public class GerenciamentoDePedidos : IGerenciamentoDePedidoRepository
 
     public void AdicionarItemPedidos()
     {
+        _pedidoRepositoryMySqlr.ImprimirTodos();
         Console.WriteLine("PREENCHA OS DADOS DO ITEM:");
         Console.Write("ID do pedido: ");
         int pedidoId;
         while (true)
         {
-            pedidoId = Convert.ToInt32(Console.ReadLine());
-            if (_pedidoRepositoryMySqlr.ObterPorId(pedidoId) == null)
-                Console.WriteLine("Nenhum pedido com esse ID!");
-            else
-                break;
+            try
+            {
+                pedidoId = Convert.ToInt32(Console.ReadLine());
+                if (_pedidoRepositoryMySqlr.ObterPorId(pedidoId) == null)
+                    Console.WriteLine("Nenhum pedido com esse ID!");
+                else
+                    break;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Ocorreu um erro: " + ex.Message);
+            }
         }
 
         Console.Write("Nome do produto: ");
@@ -58,18 +66,26 @@ public class GerenciamentoDePedidos : IGerenciamentoDePedidoRepository
 
     public void AtualizarStatus()
     {
+        _pedidoRepositoryMySqlr.ImprimirTodos();
         Console.Write("ID do pedido: ");
         int pedidoId;
         while (true)
         {
-            pedidoId = Convert.ToInt32(Console.ReadLine());
-            if (_pedidoRepositoryMySqlr.ObterPorId(pedidoId) == null)
-                Console.WriteLine("Nenhum pedido com esse ID!");
-            else
-                break;
+            try
+            {
+                pedidoId = Convert.ToInt32(Console.ReadLine());
+                if (_pedidoRepositoryMySqlr.ObterPorId(pedidoId) == null)
+                    Console.WriteLine("Nenhum pedido com esse ID!");
+                else
+                    break;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Ocorreu um erro: " + ex.Message);
+            }
         }
 
-        Console.Write("Status [Entregue|Enviado]: ");
+        Console.Write("Status [Entregue|Enviado|Pendente]: ");
         string? status = readStatus();
 
         _pedidoRepositoryMySqlr.AtualizarStatus(pedidoId, status);
@@ -82,11 +98,18 @@ public class GerenciamentoDePedidos : IGerenciamentoDePedidoRepository
         int pedidoId;
         while (true)
         {
-            pedidoId = Convert.ToInt32(Console.ReadLine());
-            if (_pedidoRepositoryMySqlr.ObterPorId(pedidoId) == null)
-                Console.WriteLine("Nenhum pedido com esse ID! Digite outro");
-            else
-                break;
+            try
+            {
+                pedidoId = Convert.ToInt32(Console.ReadLine());
+                if (_pedidoRepositoryMySqlr.ObterPorId(pedidoId) == null)
+                    Console.WriteLine("Nenhum pedido com esse ID! Digite outro");
+                else
+                    break;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Ocorreu um erro: " + ex.Message);
+            }
         }
 
         _pedidoRepositoryMySqlr.Excluir(pedidoId);
@@ -107,7 +130,7 @@ public class GerenciamentoDePedidos : IGerenciamentoDePedidoRepository
 
         else if (filtro == "Status")
         {
-            Console.Write("Status [Entregue|Enviado]: ");
+            Console.Write("Status [Entregue|Enviado|Pendente]: ");
             string? status = readStatus();
 
             if (status != null)
@@ -180,12 +203,14 @@ public class GerenciamentoDePedidos : IGerenciamentoDePedidoRepository
 
     public string readStatus()
     {
-        string x = "";
-        while (x != "Entregue" || x != "Enviado" || x != "Pendente")
+        string x;
+        while (true)
         {
             x = Console.ReadLine();
-            if (x != "Entregue" || x != "Enviado" || x != "Pendente")
+            if (x != "Entregue" && x != "Enviado" && x != "Pendente")
                 Console.WriteLine("Status inválido!");
+            else
+                break;
         }
 
         return x;
@@ -193,14 +218,15 @@ public class GerenciamentoDePedidos : IGerenciamentoDePedidoRepository
 
     public string readData()
     {
-        DateTime dataValida;
-        while (!DateTime.TryParseExact(Console.ReadLine(), "yyyy/MM/dd", CultureInfo.InvariantCulture,
+        DateOnly dataValida;
+
+        while (!DateOnly.TryParseExact(Console.ReadLine(), "dd/MM/yyyy", CultureInfo.InvariantCulture,
                    DateTimeStyles.None,
                    out dataValida))
         {
             Console.WriteLine("Digite uma data válida!");
         }
 
-        return dataValida.ToString();
+        return dataValida.ToString("yyyy-MM-dd");
     }
 }

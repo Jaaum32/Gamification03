@@ -6,7 +6,7 @@ namespace Gamification03.Controller;
 
 public class ItemPedidoRepositoryMySql : IItemPedidoRepository
 {
-    private MySqlConnection _mySqlConnection = new MySqlConnection("Persist Security Info=False;server=localhost;database=gamefication;uid=root;pwd=0406");
+    private MySqlConnection _mySqlConnection = new MySqlConnection("Persist Security Info=False;server=localhost;database=gamefication;uid=root;pwd=1234");
     private void InicializeDatabase()
     {
         try{
