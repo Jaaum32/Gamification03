@@ -16,32 +16,40 @@ public static class Program
                 {
                     case 1:
                         gerenciamento.CriarPedido();
+                        Console.Clear();
                         break;
                     case 2:
                         gerenciamento.AdicionarItemPedidos();
+                        Console.Clear();
                         break;
                     case 3:
                         gerenciamento.AtualizarStatus();
+                        Console.Clear();
                         break;
                     case 4:
                         gerenciamento.RemoverPedido();
+                        Console.Clear();
                         break;
                     case 5:
                         switch (MenuBusca())
                         {
                             case 1:
                                 gerenciamento.ListarPedidos("Cliente");
+                                Console.Clear();
                                 break;
                             case 2:
                                 gerenciamento.ListarPedidos("Data");
+                                Console.Clear();
                                 break;
                             case 3:
                                 gerenciamento.ListarPedidos("Status");
+                                Console.Clear();
                                 break;
                         }
                         break;
                     case 6:
                         gerenciamento.CalcularValorPedido();
+                        Console.Clear();
                         break;
                     default:
                         sair = 1;
@@ -52,7 +60,7 @@ public static class Program
 
         public static int Menu()
         {
-            Console.WriteLine("-=: Digite a opção desejada :=-");
+            Console.WriteLine("\n-=: Digite a opção desejada :=-");
             Console.WriteLine("1 - Adicionar novo pedido");
             Console.WriteLine("2 - Adicionar itens a um pedido");
             Console.WriteLine("3 - Atualizar status pedido");
@@ -65,7 +73,7 @@ public static class Program
 
         public static int MenuBusca()
         {
-            Console.WriteLine("-=: Digite a opção desejada :=-");
+            Console.WriteLine("\n-=: Digite a opção desejada :=-");
             Console.WriteLine("1 - Buscar por cliente");
             Console.WriteLine("2 - Buscar por data");
             Console.WriteLine("3 - Buscar por status");

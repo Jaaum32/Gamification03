@@ -14,13 +14,13 @@ public class GerenciamentoDePedidos : IGerenciamentoDePedidoRepository
     public void CriarPedido()
     {
         Console.WriteLine("PREENCHA OS DADOS DO PEDIDO:");
-        Console.Write("Data do pedido (dd/mm/aaaa): ");
+        Console.Write("Data do pedido (aaaa/mm/dd): ");
         string? dataPedido = readData();
 
         Console.Write("Cliente: ");
         string? cliente = Console.ReadLine();
 
-        Console.Write("Status [Entregue|Enviado]: ");
+        Console.Write("Status [Entregue|Enviado|Pendente]: ");
         string? status = Console.ReadLine();
 
         Pedido pedido = new Pedido(dataPedido, cliente, status);
@@ -181,10 +181,10 @@ public class GerenciamentoDePedidos : IGerenciamentoDePedidoRepository
     public string readStatus()
     {
         string x = "";
-        while (x != "Entregue" || x != "Enviado")
+        while (x != "Entregue" || x != "Enviado" || x != "Pendente")
         {
             x = Console.ReadLine();
-            if (x != "Entregue" || x != "Enviado")
+            if (x != "Entregue" || x != "Enviado" || x != "Pendente")
                 Console.WriteLine("Status inválido!");
         }
 
@@ -194,7 +194,7 @@ public class GerenciamentoDePedidos : IGerenciamentoDePedidoRepository
     public string readData()
     {
         DateTime dataValida;
-        while (!DateTime.TryParseExact(Console.ReadLine(), "dd/MM/yyyy", CultureInfo.InvariantCulture,
+        while (!DateTime.TryParseExact(Console.ReadLine(), "yyyy/MM/dd", CultureInfo.InvariantCulture,
                    DateTimeStyles.None,
                    out dataValida))
         {
