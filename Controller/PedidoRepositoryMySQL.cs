@@ -1,7 +1,7 @@
 using Gamification03.Interfaces;
 using Gamification03.Model;
 using MySql.Data.MySqlClient;
-using System.Globalization;
+
 
 namespace Gamification03.Controller;
 
@@ -125,7 +125,7 @@ public class PedidoRepositoryMySql : IPedidoRepository
     public IEnumerable<Pedido> ObterPorNome(string nome)
     {
         List<Pedido> pedidos = new List<Pedido>();
-
+        _mySqlConnection.Close();
         InicializeDatabase();
         MySqlCommand cmd = new MySqlCommand();
 
@@ -154,7 +154,7 @@ public class PedidoRepositoryMySql : IPedidoRepository
     public IEnumerable<Pedido> ObterPorStatus(String status)
     {
         List<Pedido> pedidos = new List<Pedido>();
-
+        _mySqlConnection.Close();
         InicializeDatabase();
         MySqlCommand cmd = new MySqlCommand();
 
@@ -183,7 +183,7 @@ public class PedidoRepositoryMySql : IPedidoRepository
     public IEnumerable<Pedido> ObterPorData(String data)
     {
         List<Pedido> pedidos = new List<Pedido>();
-
+        _mySqlConnection.Close();
         InicializeDatabase();
         MySqlCommand cmd = new MySqlCommand();
 
@@ -212,7 +212,7 @@ public class PedidoRepositoryMySql : IPedidoRepository
     public IEnumerable<Pedido> ListarTodos()
     {
         List<Pedido> pedidos = new List<Pedido>();
-
+        _mySqlConnection.Close();
         InicializeDatabase();
         MySqlCommand cmd = new MySqlCommand();
 

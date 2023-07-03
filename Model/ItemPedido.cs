@@ -50,5 +50,9 @@ public class ItemPedido
         PrecoUnit = precoUnit;
         PedidoId = pedidoId;
     }
+    public override string ToString()
+    {
+        return "[" + Id + "]\nNome: " + Produto + "\nQuantidade: " + Quantidade + "\nPreço Unit: " + PrecoUnit;
+    }
 }
 

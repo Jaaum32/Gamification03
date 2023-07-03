@@ -31,19 +31,17 @@ public static class Program
                         Console.Clear();
                         break;
                     case 5:
+                        Console.Clear();
                         switch (MenuBusca())
                         {
                             case 1:
                                 gerenciamento.ListarPedidos("Cliente");
-                                Console.Clear();
                                 break;
                             case 2:
                                 gerenciamento.ListarPedidos("Data");
-                                Console.Clear();
                                 break;
                             case 3:
                                 gerenciamento.ListarPedidos("Status");
-                                Console.Clear();
                                 break;
                         }
                         break;

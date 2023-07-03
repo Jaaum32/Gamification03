@@ -129,7 +129,7 @@ public class ItemPedidoRepositoryMySql : IItemPedidoRepository
     public IEnumerable<ItemPedido> ListarTodosPorId(int pedidoId)
     {
         List<ItemPedido> itemPedidos = new List<ItemPedido>();
-
+        _mySqlConnection.Close();
         InicializeDatabase();
         MySqlCommand cmd = new MySqlCommand();
 

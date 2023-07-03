@@ -146,7 +146,7 @@ public class GerenciamentoDePedidos : IGerenciamentoDePedidoRepository
                 pedidos = _pedidoRepositoryMySqlr.ObterPorData(dataPedido);
         }
 
-        if (pedidos == null)
+        if (pedidos.Count() == 0)
             Console.WriteLine("Nenhum pedido com esses dados!");
         else
         {
